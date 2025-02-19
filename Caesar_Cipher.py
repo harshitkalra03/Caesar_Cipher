@@ -6,7 +6,7 @@ tradionally used concept in cryptography of cipher and decipher a string by usin
 """
 
 
-from art import Welcome_Portal
+from art import Welcome_Portal, thank_you
 print(Welcome_Portal)
 
 alphabets = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i': 9, 'j': 10,
@@ -15,30 +15,44 @@ alphabets = {'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5, 'f': 6, 'g': 7, 'h': 8, 'i'
  'J': 36, 'K': 37, 'L': 38, 'M': 39, 'N': 40, 'O': 41, 'P': 42, 'Q': 43, 'R': 44, 
  'S': 45, 'T': 46, 'U': 47, 'V': 48, 'W': 49, 'X': 50, 'Y': 51, 'Z': 52}
 
-
-service = input("What type of service you want from the portal, cipher or decipher?\n").lower()
+continue_ = True
 
 def cipher(string, shift):
     cipher_text = ""
     for i in range(len(string)):
-        cipher_text += [key for key, value in alphabets.items() if value == (alphabets[string[i]]+shift)%52][0]
+        if string[i] not in alphabets.keys():
+            cipher_text += string[i]
+        else:
+            cipher_text += [key for key, value in alphabets.items() if value == (alphabets[string[i]]+shift)%52][0]
     return cipher_text
     
 def decipher(string, shift):
     decipher_text = ""
     for i in range(len(string)):
-        decipher_text += [key for key, value in alphabets.items() if value == (alphabets[string[i]]-shift)%52][0]
+        if string[i] not in alphabets.keys():
+            decipher_text += string[i]
+        else:
+            decipher_text += [key for key, value in alphabets.items() if value == (alphabets[string[i]]-shift)%52][0]
     return decipher_text
+
+while continue_:
+    service = input("What type of service you want from the portal, cipher or decipher?\n").lower()
+    if service=="cipher":
+        text = input("Enter the string which you want to cipher.\n")
+        key = int(input("What is your shift key?\n"))
+        print(f"The ciphered text for {text} in lower cases is {cipher(string = text, shift = key)}.")
+        
+
+    elif service=="decipher":
+        text = input("Enter the string which you want to decipher.\n")
+        key = int(input("What is your shift key?\n"))
+        print(f"The deciphered text for {text} in lower cases is {decipher(string = text, shift = key)}.")
+
+    else:
+        print("There is no such service available, please recheck the list of available services.")
     
-if service=="cipher":
-    text = input("Enter the string which you want to cipher.\n")
-    key = int(input("What is your shift key?\n"))
-    print(f"The ciphered text for {text} in lower cases is {cipher(string = text, shift = key)}.")
-
-elif service=="decipher":
-    text = input("Enter the string which you want to decipher.\n")
-    key = int(input("What is your shift key?\n"))
-    print(f"The deciphered text for {text} in lower cases is {decipher(string = text, shift = key)}.")
-
-else:
-    print("There is no such service available, please recheck the list of available services.")
+    if input("Do you want to continue using the portal? y or n\n").lower() == "y":
+        continue_ = True
+    else:
+        continue_ = False
+        print(thank_you)
